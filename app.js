@@ -3,6 +3,8 @@ const bodyParser = require("body-parser")
 
 const app = express()
 
+app.set('view engine', 'ejs');
+
 app.get("/", function(req, res){
     var today = new Date()
     var thisDay = today.toString().split(' ')[0]
@@ -10,7 +12,7 @@ app.get("/", function(req, res){
     if(today.getDay() === 6 || today.getDay() === 0){
         res.send("<h1>Everybody's working for the weekend</h1>")
     }else{
-        res.send("<h1>Today is " + thisDay + "day You have to go to work today</h1>")
+        res.render("list", {day: thisDay})
     }
 })
 
