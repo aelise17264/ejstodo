@@ -4,13 +4,22 @@
         <meta charset="utf-8">
         <title>To Do List</title>
     </head>
-    <body>
+    <body style="display: flex;flex-direction: column; text-align: center;align-content: center;">
         <% if(day === "Saturday" || day ==="Sunday"){ %>
              <h1 style='color: purple'><%=day%> ToDo List</h1>
         <% }else{ %>
             <h1 style='color: blue'> <%=day%> ToDo List</h1>
         <% } %>
 
-        
+        <ul>
+            <li style="margin-left: 45%; width:fit-content">Wake Up</li>
+            <li style="margin-left: 45%; width:fit-content">Drink Coffee</li>
+            <li style="margin-left: 45%; width:fit-content">Be a Badass</li>
+        </ul>
+
+        <form class="" action="/" method="POST">
+            <input type="text" name="newItem">
+            <button type="submit" name="button">Add ToDo</button>
+        </form>
     </body>
 </html>
