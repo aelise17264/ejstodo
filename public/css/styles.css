@@ -76,6 +76,8 @@ input[type="text"] {
   background: transparent;
   font-size: 20px;
   font-weight: 200;
+  font-family: serif;
+
   width: 313px;
 }
 
@@ -90,7 +92,17 @@ input[type="text"]:focus {
 }
 
 footer {
-  color: white;
+  /* color: white; */
   color: rgba(0, 0, 0, 0.5);
   text-align: center;
+}
+
+nav{
+  margin-bottom: 2%;
+}
+
+.navItem{
+  font-weight: bold;
+  padding-right: 2%;
+  text-decoration: none;
 }
