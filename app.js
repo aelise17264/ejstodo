@@ -20,12 +20,12 @@ app.get("/", function(req, res){
         day: "numeric",
         month: "long"
     }
-    var thisDay = today.toLocaleDateString("en-US", options)
-    if(today.getDay() === 6 || today.getDay() === 0){
-        res.send("<h1>Everybody's working for the weekend</h1>")
-    }else{
+    let thisDay = today.toLocaleDateString("en-US", options)
+    // if(today.getDay() === 6 || today.getDay() === 0){
+    //     res.send("<h1>Everybody's working for the weekend</h1>")
+    // }else{
         res.render("list", {listTitle: thisDay, newToDo: items})
-    }
+    //}
 })
 
 // app.post("/", function(req, res){
