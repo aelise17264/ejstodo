@@ -12,9 +12,10 @@
         <% } %>
 
         <ul>
-            <li style="margin-left: 45%; width:fit-content">Wake Up</li>
-            <li style="margin-left: 45%; width:fit-content">Drink Coffee</li>
-            <li style="margin-left: 45%; width:fit-content">Be a Badass</li>
+            <% for(var i=0; i<newToDo.length; i++){ %>
+                <li style="margin-left: 45%; width:fit-content"><%=newToDo[i]%></li>
+
+             <% } %>
         </ul>
 
         <form class="" action="/" method="POST">
