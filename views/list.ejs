@@ -3,24 +3,31 @@
     <head>
         <meta charset="utf-8">
         <title>To Do List</title>
+        <link rel="stylesheet" href="css/styles.css">
     </head>
-    <body style="display: flex;flex-direction: column; text-align: center;align-content: center;">
+    <body>
+        <div class="box" id="heading">
         <% if(day === "Saturday" || day ==="Sunday"){ %>
-             <h1 style='color: purple'><%=day%> ToDo List</h1>
+             <h1><%=day%> ToDo List</h1>
         <% }else{ %>
-            <h1 style='color: blue'> <%=day%> ToDo List</h1>
+            <h1> <%=day%> ToDo List</h1>
         <% } %>
-
-        <ul>
+    </div>
+    <div class="box">
+        
             <% for(var i=0; i<newToDo.length; i++){ %>
-                <li style="margin-left: 45%; width:fit-content"><%=newToDo[i]%></li>
-
+            <div class="item">
+                <input type="checkbox">
+                <p ><%=newToDo[i]%></p>
+            </div>
              <% } %>
-        </ul>
+      
 
-        <form class="" action="/" method="POST">
-            <input type="text" name="newItem">
-            <button type="submit" name="button">Add ToDo</button>
+    
+        <form class="item" action="/" method="POST">
+            <input type="text" name="newItem" placeholder="New ToDo">
+            <button type="submit" name="button">+</button>
         </form>
+    </div>
     </body>
 </html>
