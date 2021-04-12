@@ -9,7 +9,7 @@ app.use(express.static("public"))
 
 app.set('view engine', 'ejs');
 
-mongoose.connect("mongodb://localhost:27017/todolistDB", {useNewUrlParser: true})
+mongoose.connect("mongodb://localhost:27017/todolistDB", {useNewUrlParser: true, useUnifiedTopology: true})
 
 const itemSchema = {
     name: String
@@ -31,19 +31,29 @@ const item3 = new Item({
 
 const defaultItems = [item1, item2, item3]
 
-Item.insertMany(defaultItems, function(err){
-    if(err){
-        console.log(err)
-    }else{
-        console.log("Success")
-    }
-})
+
 
 app.get("/", function(req, res){
+
+
+
     Item.find({}, function(err, foundItems){
     //   console.log(foundItems)
-        
-      res.render("list", {listTitle: "Today", newToDo: foundItems})
+    
+    if(foundItems.length === 0){
+        Item.insertMany(defaultItems, function(err){
+            if(err){
+                console.log(err)
+            }else{
+                console.log("Success")
+            }
+        })
+        res.redirect("/")
+    }else{
+        res.render("list", {listTitle: "Today", newToDo: foundItems})
+
+    }
+
 
       
     })
@@ -70,16 +80,38 @@ app.get("/", function(req, res){
 // })
 
 app.post("/", function(req, res){
-    let item = req.body.newItem
+    // let item = req.body.newItem
 
-    if(req.body.list === "Work"){
-        workItems.push(item)
-        res.redirect("/work")
-    }else{
-        items.push(item)
-        res.redirect("/")
-    }
+    // if(req.body.list === "Work"){
+    //     workItems.push(item)
+    //     res.redirect("/work")
+    // }else{
+    //     items.push(item)
+    //     res.redirect("/")
+    // }
+    const itemName = req.body.newItem
 
+    const item = new Item({
+        name: itemName
+    })
+
+    item.save()
+
+    res.redirect("/")
+})
+
+app.post("/delete", function(req, res){
+    // console.log(req.body)
+    const checkedID = req.body.checkbox
+    Item.findByIdAndRemove(checkedID, function(err){
+        if(err){
+            console.log(err)
+        }else{
+            console.log("it's gone")
+            res.redirect("/")
+        }
+    })
+    
 })
 
 app.get("/work", function(req, res){
