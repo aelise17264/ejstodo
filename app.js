@@ -40,6 +40,14 @@ Item.insertMany(defaultItems, function(err){
 })
 
 app.get("/", function(req, res){
+    Item.find({}, function(err, foundItems){
+    //   console.log(foundItems)
+        
+      res.render("list", {listTitle: "Today", newToDo: foundItems})
+
+      
+    })
+
     // var today = new Date()
     // var thisDay = today.toString().split(' ')[0] + "day"
     // var options = {
@@ -51,7 +59,6 @@ app.get("/", function(req, res){
     // if(today.getDay() === 6 || today.getDay() === 0){
     //     res.send("<h1>Everybody's working for the weekend</h1>")
     // }else{
-        // res.render("list", {listTitle: "Today", newToDo: Item})
     //}
 })
 
