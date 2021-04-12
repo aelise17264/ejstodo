@@ -1,16 +1,15 @@
 const express = require("express")
 const bodyParser = require("body-parser")
+const mongoose = require('mongoose')
 
 const app = express()
-
-var items = []
-
-let workItems = []
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static("public"))
 
 app.set('view engine', 'ejs');
+
+mongoose.connect("mongodb://localhose:27017/todolistDB", {useNewUrlParser: true})
 
 app.get("/", function(req, res){
     var today = new Date()
