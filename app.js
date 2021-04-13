@@ -10,7 +10,7 @@ app.use(express.static("public"))
 
 app.set('view engine', 'ejs');
 
-mongoose.connect("mongodb://localhost:27017/todolistDB", {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
+mongoose.connect("mongodb+srv://ab-admin:Password123@cluster0.bj2rh.mongodb.net/todolistDB", {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
 
 const itemSchema = {
     name: String
