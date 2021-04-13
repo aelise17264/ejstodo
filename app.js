@@ -31,11 +31,14 @@ const item3 = new Item({
 
 const defaultItems = [item1, item2, item3]
 
+const listSchema = {
+    name: String,
+    items: [itemSchema]
+}
 
+const List = mongoose.model("List", listSchema)
 
 app.get("/", function(req, res){
-
-
 
     Item.find({}, function(err, foundItems){
     //   console.log(foundItems)
@@ -51,44 +54,15 @@ app.get("/", function(req, res){
         res.redirect("/")
     }else{
         res.render("list", {listTitle: "Today", newToDo: foundItems})
-
     }
 
-
-      
     })
 
-    // var today = new Date()
-    // var thisDay = today.toString().split(' ')[0] + "day"
-    // var options = {
-    //     weekday: "long",
-    //     day: "numeric",
-    //     month: "long"
-    // }
-    // let thisDay = today.toLocaleDateString("en-US", options)
-    // if(today.getDay() === 6 || today.getDay() === 0){
-    //     res.send("<h1>Everybody's working for the weekend</h1>")
-    // }else{
-    //}
 })
 
-// app.post("/", function(req, res){
-//     var item = req.body.newItem
-//     items.push(item)
-
-//     res.redirect("/")
-// })
 
 app.post("/", function(req, res){
-    // let item = req.body.newItem
 
-    // if(req.body.list === "Work"){
-    //     workItems.push(item)
-    //     res.redirect("/work")
-    // }else{
-    //     items.push(item)
-    //     res.redirect("/")
-    // }
     const itemName = req.body.newItem
 
     const item = new Item({
@@ -114,14 +88,71 @@ app.post("/delete", function(req, res){
     
 })
 
-app.get("/work", function(req, res){
-    res.render("list", {listTitle: "Work", newToDo: workItems})
-})
+app.get("/:customName", function(req, res){
+    const customName = req.params.customName
+    
+    List.findOne({name: customName}, function(err, foundName){
+        if(!err){
+            if(!foundName){
+                //Create a new list
+                const list = new List({
+                    name: customName,
+                    items: defaultItems
+                })
+                list.save()
+                res.redirect("/" + customName)
 
-app.get("/about", function(req, res){
-    res.render("about")
-})
+            }else{
+                //show an existing list
+                res.render("list", {listTitle: foundName.name, newToDo: foundName.items})
+            }
+        }
+    })
+
+    })
+
 
 app.listen(3000, function(){
     console.log("Server running on port 3000")
 })
+
+
+
+
+
+    // var today = new Date()
+    // var thisDay = today.toString().split(' ')[0] + "day"
+    // var options = {
+    //     weekday: "long",
+    //     day: "numeric",
+    //     month: "long"
+    // }
+    // let thisDay = today.toLocaleDateString("en-US", options)
+    // if(today.getDay() === 6 || today.getDay() === 0){
+    //     res.send("<h1>Everybody's working for the weekend</h1>")
+    // }else{
+    //}
+
+    // app.get("/about", function(req, res){
+//     res.render("about")
+// })
+
+    // let item = req.body.newItem
+
+    // if(req.body.list === "Work"){
+    //     workItems.push(item)
+    //     res.redirect("/work")
+    // }else{
+    //     items.push(item)
+    //     res.redirect("/")
+    // }
+
+    // app.post("/", function(req, res){
+//     var item = req.body.newItem
+//     items.push(item)
+
+//     res.redirect("/")
+// })
+
+//console.log(customName)
+    //res.render("list", {listTitle: "Work", newToDo: workItems})
