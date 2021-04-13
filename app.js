@@ -1,6 +1,7 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 const mongoose = require('mongoose')
+const _ = require("lodash")
 
 const app = express()
 
@@ -9,7 +10,7 @@ app.use(express.static("public"))
 
 app.set('view engine', 'ejs');
 
-mongoose.connect("mongodb://localhost:27017/todolistDB", {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect("mongodb://localhost:27017/todolistDB", {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
 
 const itemSchema = {
     name: String
@@ -87,19 +88,32 @@ app.post("/", function(req, res){
 app.post("/delete", function(req, res){
     // console.log(req.body)
     const checkedID = req.body.checkbox
-    Item.findByIdAndRemove(checkedID, function(err){
-        if(err){
-            console.log(err)
-        }else{
-            console.log("it's gone")
-            res.redirect("/")
+
+    const listName = req.body.listName
+
+    if(listName === "Today"){
+        Item.findByIdAndRemove(checkedID, function(err){
+            if(err){
+                console.log('its not working')
+            }else{
+                console.log("it's gone")
+                res.redirect("/")
+            }
+        })
+    }else{
+        List.findOneAndUpdate({name: listName},
+         {$pull: {items: {_id: checkedID}}},
+         function(err, foundName){
+            if(!err){
+                res.redirect("/" + listName)
+            }
         }
-    })
-    
+        )
+    }   
 })
 
 app.get("/:customName", function(req, res){
-    const customName = req.params.customName
+    const customName = _.capitalize(req.params.customName)
     
     List.findOne({name: customName}, function(err, foundName){
         if(!err){
